@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Recruitment Challenge Issue Tracker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+
+  <body>
+
+    <div id="main" class="container">
+
+      <header class="header clearfix">
+        <h3>Recruitment Challenge Issue Tracker</h3>
+      </header>
+
+      <section id="issue-entry" class="content-section">
+        <h3>New Issue</h3>
+        <div class="form-wrapper">
+          <form id="form-issue-entry" class="form-inline">
+
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" id="new-entry-title" placeholder="Title" data-parsley-required>
+                <label class="sr-only" for="new-entry-title">Title</label>
+                <div class="validation-errors"></div>
+
+                <textarea class="form-control" id="new-entry-description" placeholder="Description"></textarea>
+                <label class="sr-only" for="new-entry-description">Description</label>
+                <div class="validation-errors"></div>
+
+                <select id="new-entry-severity" class="form-control" data-parsley-required data-parsley-severity="">
+                  <option value="" selected>Severity...</option>
+                </select>
+                <label class="sr-only" for="new-entry-severity">Select the severity</label>
+                <div class="validation-errors"></div>
+
+                <select id="new-entry-assignee" class="form-control" data-parsley-required data-parsley-assignee="">
+                  <option value="" selected>Assign to...</option>
+                </select>
+                <label class="sr-only" for="new-entry-assignee">Assign to user</label>
+                <div class="validation-errors"></div>
+
+              </div>
+            </div>
+
+            <button type="submit" id="new-entry-submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-ok"></span> Add
+            </button>
+
+          </form>
+        </div>
+      </section>
+
+<!--
+      <section id="issue-entry" class="content-section">
+        <h3>New Issue</h3>
+        <div class="form-wrapper">
+          <form id="form-issue-entry" class="form-inline">
+
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" id="new-entry-title" placeholder="Title" data-parsley-required>
+                <label class="sr-only" for="new-entry-title">Title</label>
+              </div>
+              <div class="validation-errors"></div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" id="new-entry-description" placeholder="Description">
+                <label class="sr-only" for="new-entry-description">Description</label>
+              </div>
+              <div class="validation-errors"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="new-entry-severity">Select the severity</label>
+              <select id="new-entry-severity" class="form-control" data-parsley-required data-parsley-severity="">
+                <option value="" selected>Severity...</option>
+              </select>
+              <div class="validation-errors"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="new-entry-assignee">Assign to user</label>
+              <select id="new-entry-assignee" class="form-control" data-parsley-required data-parsley-assignee="">
+                <option value="" selected>Assign to...</option>
+              </select>
+              <div class="validation-errors"></div>
+            </div>
+
+            <button type="submit" id="new-entry-submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-ok"></span> Add
+            </button>
+          </form>
+        </div>
+      </section>
+-->
+      <section id="main" class="content-section">
+        <h3>Issues</h3>
+        <table id="issues-list" class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>State</th>
+              <th>Severity</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Owner</th>
+              <th>Assignee</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20150503/json2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.16/backbone.localStorage-min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/vendor/parsleyjs/parsley.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/scripts.js"></script>
+
+    <script type="text/template" id="issue-list-template">
+      <td><%- issue.id %></td>
+      <td><%- RcIssueTracker.issueStates[issue.state] %></td>
+      <td><%- RcIssueTracker.issueSeverities[issue.severity] %></td>
+      <td><%- issue.title %></td>
+      <td><%- issue.description %></td>
+      <td><%- owner ? owner.name : '-' %></td>
+      <td><%- assignee ? assignee.name : '-' %></td>
+      <td>
+        <button type="submit" id="issue-remove" class="btn btn-danger destroy">
+          <span class="glyphicon glyphicon-remove"></span> Delete
+        </button>
+      </td>
+    </script>
+
+  </body>
+</html>

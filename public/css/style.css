@@ -1,0 +1,18 @@
+#form-issue-entry .form-group {
+  width: 420px;
+}
+
+#form-issue-entry .input-group {
+  width: 400px;
+}
+
+#form-issue-entry input,
+#form-issue-entry textarea,
+#form-issue-entry select {
+  margin-top: 1em;
+}
+
+.parsley-errors-list li {
+  text-align: left;
+  list-style: none;
+}
